@@ -8,6 +8,20 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <ProgressRing x:Name="LoadingRing" Visibility="Collapsed"
+                      IsActive="True"
+                      HorizontalAlignment="Center"
+                      Height="40" Width="40">
+            
+        </ProgressRing>
+        <StackPanel x:Name="MainPanel"
+                    Visibility="Collapsed">
+            <TextBlock x:Name="NowLocation"
+                       HorizontalAlignment="Center"
+                       FontSize="20dp">현재 위치</TextBlock>
+            <TextBlock x:Name="WeatherResult"
+                     HorizontalAlignment="Center"
+                     FontSize="20dp"></TextBlock>
+        </StackPanel>
     </Grid>
 </Page>

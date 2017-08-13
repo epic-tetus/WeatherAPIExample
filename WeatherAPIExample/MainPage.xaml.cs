@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +28,37 @@ namespace WeatherAPIExample
         public MainPage()
         {
             this.InitializeComponent();
+            LoadingRing.Visibility = Visibility.Visible;
+            GetPosition();
+        }
+
+        public async void GetPosition()
+        {
+            Geoposition position = null;
+            try
+            {
+                position = await LocationManager.GetPosition();
+            }
+            catch (Exception e)
+            {
+                //MessageDialog ErrorMessage = new MessageDialog("Please Allow GPS");
+                Debug.WriteLine(e.StackTrace);
+            }
+
+            NowLocation.Text = position.Coordinate.Latitude + ", " + position.Coordinate.Longitude;
+            
+            GetWeather(position.Coordinate.Latitude, position.Coordinate.Longitude);
+
+            LoadingRing.Visibility = Visibility.Collapsed;
+            MainPanel.Visibility = Visibility.Visible;
+        }
+
+        public async void GetWeather(double Latitude, double Longitude)
+        {
+            RootObject NowWeather = await WeatherElement.GetWeather(Latitude,Longitude);
+
+            WeatherResult.Text = NowWeather.name + " - " + NowWeather.main.temp + " - " + NowWeather.weather[0].description;
+
         }
     }
 }
