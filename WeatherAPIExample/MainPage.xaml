@@ -8,20 +8,32 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ProgressRing x:Name="LoadingRing" Visibility="Collapsed"
-                      IsActive="True"
-                      HorizontalAlignment="Center"
-                      Height="40" Width="40">
-            
-        </ProgressRing>
-        <StackPanel x:Name="MainPanel"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="0.6*"/>
+            <ColumnDefinition Width="0.2*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" 
+                   FontSize="40dp"
+                   Margin="20 20 0 0">
+            날씨
+        </TextBlock>
+        <StackPanel Grid.Column="1" 
+                    x:Name="MainPanel"
                     Visibility="Collapsed">
             <TextBlock x:Name="NowLocation"
                        HorizontalAlignment="Center"
-                       FontSize="20dp">현재 위치</TextBlock>
+                       FontSize="30dp"></TextBlock>
             <TextBlock x:Name="WeatherResult"
                      HorizontalAlignment="Center"
                      FontSize="20dp"></TextBlock>
         </StackPanel>
+        <ProgressRing Grid.Column="1" 
+                      x:Name="LoadingRing" Visibility="Collapsed"
+                      IsActive="True"
+                      HorizontalAlignment="Center"
+                      Height="40" Width="40">
+
+        </ProgressRing>
     </Grid>
 </Page>

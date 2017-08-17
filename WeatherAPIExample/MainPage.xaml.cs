@@ -35,18 +35,26 @@ namespace WeatherAPIExample
         public async void GetPosition()
         {
             Geoposition position = null;
-            try
+            for(int i = 0; i < 4; i++)
             {
-                position = await LocationManager.GetPosition();
-            }
-            catch (Exception e)
-            {
-                //MessageDialog ErrorMessage = new MessageDialog("Please Allow GPS");
-                Debug.WriteLine(e.StackTrace);
+                try
+                {
+                    position = await LocationManager.GetPosition();
+                    Debug.WriteLine("Clear");
+                }
+                catch (Exception e)
+                {
+                    //MessageDialog ErrorMessage = new MessageDialog("Please Allow GPS");
+                    Debug.WriteLine(e.StackTrace);
+                }
             }
 
-            NowLocation.Text = position.Coordinate.Latitude + ", " + position.Coordinate.Longitude;
-            
+            //NowLocation.Text = position.Coordinate.Latitude + ", " + position.Coordinate.Longitude;
+
+
+            //NowLocation.Text = 
+            GetAddress(position.Coordinate.Latitude, position.Coordinate.Longitude);
+
             GetWeather(position.Coordinate.Latitude, position.Coordinate.Longitude);
 
             LoadingRing.Visibility = Visibility.Collapsed;
@@ -57,8 +65,14 @@ namespace WeatherAPIExample
         {
             RootObject NowWeather = await WeatherElement.GetWeather(Latitude,Longitude);
 
-            WeatherResult.Text = NowWeather.name + " - " + NowWeather.main.temp + " - " + NowWeather.weather[0].description;
+            WeatherResult.Text = NowWeather.name + " - " + (NowWeather.main.temp - 273.15) + " - " + NowWeather.weather[0].description;
+        }
 
+        public async void GetAddress(double Latitude, double Longitude)
+        {
+            AddressObject addressObject = await AddressElement.GetAddress(Latitude, Longitude);
+
+            NowLocation.Text = addressObject.fullName + "의 현재 날씨";
         }
     }
 }
